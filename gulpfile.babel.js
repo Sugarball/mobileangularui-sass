@@ -15,12 +15,21 @@ var config = {
       './src/sass/app.scss', './src/sass/responsive.scss',
     ],
     paths: [
-      './src/sass' //'./bower_components'
+      './src/sass','./bower_components'
     ],
     libcss:{
-        src :'./bower_components/mobile-angular-ui/dist/css/*.min.css'
+        src :[],//'./bower_components/mobile-angular-ui/dist/css/*.min.css'
     }
   },
+    less: {
+        src: [
+            './bower_components/mobile-angular-ui/src/less/mobile-angular-ui-base.less'
+        ],
+        paths: [
+            './bower_components'
+        ],
+
+    },
   vendor: {
     js: [
       './bower_components/angular/angular.js',
@@ -68,7 +77,7 @@ if (require('fs').existsSync('./config.js')) {
 var gulp           = require('gulp'),
     seq            = require('run-sequence'),
     connect        = require('gulp-connect'),
-    //less           = require('gulp-less'),
+    less           = require('gulp-less'),
     uglify         = require('gulp-uglify'),
     sourcemaps     = require('gulp-sourcemaps'),
     cssmin         = require('gulp-cssmin'),
@@ -185,6 +194,17 @@ gulp.task('html', function() {
 =            Compile, minify, mobilize sass                            =
 ======================================================================*/
 
+gulp.task('less', function () {
+    return gulp.src(config.less.src).pipe(less({
+        paths: config.less.paths.map(function(p){
+            return path.resolve(__dirname, p);
+        })
+    })).pipe(concat('lib.css'))
+        .pipe(cssmin())
+        .pipe(rename({suffix: '.min'}))
+        .pipe(gulp.dest(path.join(config.dest, 'css')));
+});
+
 gulp.task('sass', function () {
     return gulp.src(config.sass.src).pipe(
     sass.sync({
@@ -210,7 +230,7 @@ gulp.task('sass', function () {
 
 gulp.task('libcss', function () {
     return gulp.src(config.sass.libcss.src)
-        .pipe(concat('lib.css'))
+        .pipe(concat('libcss.css'))
         .pipe(cssmin())
         .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest(path.join(config.dest, 'css')));
@@ -261,6 +281,7 @@ gulp.task('watch', function () {
   }
   gulp.watch(['./src/html/**/*'], ['html']);
   gulp.watch(['./src/sass/**/*'], ['sass']);
+  gulp.watch(['./bower_components/**/*.less'], ['less']);
   gulp.watch(['./src/js/**/*', './src/templates/**/*'], ['js']);
   gulp.watch([config.vendor.js], ['libjs']);
   gulp.watch(['./src/images/**/*'], ['images']);
@@ -286,7 +307,7 @@ gulp.task('weinre', function() {
 ======================================*/
 
 gulp.task('build', function(done) {
-  var tasks = ['html', 'fonts', 'images', 'sass', 'libcss','libjs','js'];
+  var tasks = ['html', 'fonts', 'images', 'sass', 'libcss','less','libjs','js'];
   seq('clean', tasks, done);
 });
 
