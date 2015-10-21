@@ -225,7 +225,6 @@ gulp.task('libcss', function () {
 
 gulp.task('js', function() {
     streamqueue({ objectMode: true },
-      gulp.src(config.vendor.js),
       gulp.src('./src/js/**/*.js').pipe(babel()).pipe(ngFilesort()),
       gulp.src(['src/templates/**/*.html']).pipe(templateCache({ module: 'MAUIDemo' }))
     )
@@ -236,6 +235,19 @@ gulp.task('js', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(path.join(config.dest, 'js')));
+});
+
+gulp.task('libjs', function() {
+    streamqueue({ objectMode: true },
+        gulp.src(config.vendor.js)
+    )
+        .pipe(sourcemaps.init())
+        .pipe(concat('lib.js'))
+        .pipe(ngAnnotate())
+        .pipe(uglify())
+        .pipe(rename({suffix: '.min'}))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(path.join(config.dest, 'js')));
 });
 
 
@@ -249,7 +261,8 @@ gulp.task('watch', function () {
   }
   gulp.watch(['./src/html/**/*'], ['html']);
   gulp.watch(['./src/sass/**/*'], ['sass']);
-  gulp.watch(['./src/js/**/*', './src/templates/**/*', config.vendor.js], ['js']);
+  gulp.watch(['./src/js/**/*', './src/templates/**/*'], ['js']);
+  gulp.watch([config.vendor.js], ['libjs']);
   gulp.watch(['./src/images/**/*'], ['images']);
 });
 
@@ -273,7 +286,7 @@ gulp.task('weinre', function() {
 ======================================*/
 
 gulp.task('build', function(done) {
-  var tasks = ['html', 'fonts', 'images', 'sass', 'libcss','js'];
+  var tasks = ['html', 'fonts', 'images', 'sass', 'libcss','libjs','js'];
   seq('clean', tasks, done);
 });
 
