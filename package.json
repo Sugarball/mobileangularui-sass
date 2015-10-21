@@ -1,0 +1,29 @@
+{
+  "name": "maui-demo",
+  "version": "0.0.0",
+  "devDependencies": {
+    "babel": "^5.5.6",
+    "babel-core": "^5.5.6",
+    "gulp": "^3.8.1",
+    "gulp-angular-filesort": "^1.0.1",
+    "gulp-angular-templatecache": "^1.2.1",
+    "gulp-babel": "^5.3.0",
+    "gulp-concat": "^2.3.4",
+    "gulp-connect": "^2.0.5",
+    "gulp-cssmin": "^0.1.6",
+    "gulp-ignore": "^1.2.0",
+    "gulp-less": "^3.0.3",
+    "gulp-mobilizer": "^0.0.2",
+    "gulp-ng-annotate": "^0.2.0",
+    "gulp-order": "^1.1.1",
+    "gulp-rename": "^1.2.0",
+    "gulp-replace": "^0.4.0",
+    "gulp-rimraf": "^0.1.0",
+    "gulp-sass": "^2.0.4",
+    "gulp-sourcemaps": "^1.1.0",
+    "gulp-uglify": "^0.3.1",
+    "run-sequence": "^0.3.6",
+    "streamqueue": "^0.1.1",
+    "weinre": "^2.0.0-pre-I0Z7U9OV"
+  }
+}
