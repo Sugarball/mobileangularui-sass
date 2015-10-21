@@ -8,4 +8,7 @@
 ##install
 ### 1. npm install gulp bower -g
 ### 2. npm install & bower install
-### 3. gulp 
+### 3. gulp
+
+###tip
+#### less is also supported.
